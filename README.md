@@ -121,9 +121,6 @@ Se implementaron **4 pantallas**:
 - Muestra `AbreviacionCiudad` y `NombreCompleto` de cada registro
 - Buscador en tiempo real para filtrar por nombre o abreviación
 
----
-
-
 
 ## 5.Herramientas usadas
 
