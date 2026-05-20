@@ -136,5 +136,5 @@ Threading
 
 ## 6. Conclusiones.
 
-- El endpoint de **control de versiones** y el de **sincronización de esquema** no cuentan con los permisos necesarios para retornar información, por lo que estas funcionalidades están implementadas en código pero no pueden validarse con datos reales. A pesar de eso se pudo hacer una analisis interesante acerca de las APIS y como estas se puede construir y guardar gracias a herramientas que nos permiten recolectar información valiosa.
+- El endpoint de **"control de versiones"** y el de **"sincronización de esquema"** no cuentan con los permisos necesarios para retornar información, por lo que estas funcionalidades están implementadas en código pero no pueden validarse con datos reales. A pesar de eso se pudo hacer una analisis interesante acerca de las APIS y como estas se puede construir y guardar gracias a herramientas que nos permiten recolectar información valiosa.
 
