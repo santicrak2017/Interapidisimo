@@ -1,23 +1,9 @@
-"""
-CAPA DE DATOS
-=============
-Módulo responsable de:
-1. Crear y gestionar la base de datos SQLite local
-2. Consumir la API de esquema y almacenar las tablas
-3. Consultar datos locales para las pantallas
-
-Principios SOLID aplicados:
-- Single Responsibility: DatabaseManager gestiona solo la BD
-- Dependency Inversion: las capas superiores dependen de esta abstracción
-"""
 
 import sqlite3
 import requests
 from pathlib import Path
 
-# ──────────────────────────────────────────────
-# CONSTANTES
-# ──────────────────────────────────────────────
+
 
 DB_PATH = Path(__file__).parent.parent / "data" / "interrapidisimo.db"
 
@@ -32,11 +18,6 @@ LOCALIDADES_URL = (
 )
 
 TIMEOUT = 10
-
-
-# ──────────────────────────────────────────────
-# GESTOR DE BASE DE DATOS
-# ──────────────────────────────────────────────
 
 class DatabaseManager:
     """
@@ -102,7 +83,7 @@ class DatabaseManager:
         except sqlite3.Error as e:
             raise RuntimeError(f"Error al inicializar la base de datos: {e}")
 
-    # ── USUARIOS ────────────────────────────────────
+   
 
     def save_user(self, user_data: dict):
         """
@@ -132,9 +113,7 @@ class DatabaseManager:
             raise RuntimeError(f"Error al guardar usuario: {e}")
 
     def get_user(self) -> dict | None:
-        """
-        Retorna el último usuario autenticado o None si no hay ninguno.
-        """
+      
         try:
             with self._get_connection() as conn:
                 cursor = conn.cursor()
@@ -152,13 +131,10 @@ class DatabaseManager:
         except sqlite3.Error as e:
             raise RuntimeError(f"Error al consultar usuario: {e}")
 
-    # ── SISTEMA / CONFIGURACIÓN ─────────────────────
+  
 
     def save_system_value(self, clave: str, valor: str, descripcion: str = ""):
-        """
-        Guarda un valor de sistema en la tabla `sistemas`.
-        Si la clave ya existe, actualiza el valor y la fecha de actualización.
-        """
+   
         try:
             with self._get_connection() as conn:
                 cursor = conn.cursor()
@@ -210,14 +186,10 @@ class DatabaseManager:
         except sqlite3.Error as e:
             raise RuntimeError(f"Error al leer datos del sistema: {e}")
 
-    # ── ESQUEMA ─────────────────────────────────────
 
     def save_tables_schema(self, tables: list[dict]):
         """
-        Guarda la lista de tablas del esquema recibidas desde la API.
-
-        Args:
-            tables: lista de dicts con info de cada tabla
+        Guarda la lista de tablas del esquema recibidas desde la API
         """
         try:
             with self._get_connection() as conn:
@@ -259,26 +231,15 @@ class DatabaseManager:
             raise RuntimeError(f"Error al leer esquema: {e}")
 
 
-# ──────────────────────────────────────────────
-# SINCRONIZADOR DE DATOS (API → SQLite)
-# ──────────────────────────────────────────────
+
 
 class DataSynchronizer:
-    """
-    Responsable de consumir APIs de datos y sincronizarlos con la BD local.
-    Separado de DatabaseManager para cumplir Single Responsibility.
-    """
 
     def __init__(self):
         self.db = DatabaseManager()
 
     def sync_schema(self) -> dict:
-        """
-        Consume la API de esquema y almacena las tablas en SQLite.
-
-        Returns:
-            dict con success, count y message
-        """
+       
         try:
             response = requests.get(ESQUEMA_URL, timeout=TIMEOUT)
             response.raise_for_status()
@@ -311,19 +272,19 @@ class DataSynchronizer:
             return {
                 "success": True,
                 "count": len(tables),
-                "message": f"✅ Sincronizadas {len(tables)} tablas correctamente.",
+                "message": f" Sincronizadas {len(tables)} tablas correctamente. :))))",
             }
 
         except requests.exceptions.ConnectionError:
-            return {"success": False, "count": 0, "message": "❌ Sin conexión para sincronizar esquema."}
+            return {"success": False, "count": 0, "message": " Sin conexión para sincronizar esquema."}
         except requests.exceptions.Timeout:
-            return {"success": False, "count": 0, "message": "⏱️ Timeout al obtener esquema."}
+            return {"success": False, "count": 0, "message": " Timeout al obtener esquema."}
         except requests.exceptions.HTTPError as e:
-            return {"success": False, "count": 0, "message": f"❌ Error HTTP: {e}"}
+            return {"success": False, "count": 0, "message": f" Error HTTP: {e}"}
         except RuntimeError as e:
             return {"success": False, "count": 0, "message": str(e)}
         except Exception as e:
-            return {"success": False, "count": 0, "message": f"❌ Error inesperado: {e}"}
+            return {"success": False, "count": 0, "message": f" Error ...: {e}"}
 
     def get_localidades(self) -> dict:
         """
@@ -355,14 +316,14 @@ class DataSynchronizer:
             return {
                 "success": True,
                 "data": localidades,
-                "message": f"✅ {len(localidades)} localidades cargadas.",
+                "message": f" {len(localidades)} localidades cargadas. ",
             }
 
         except requests.exceptions.ConnectionError:
-            return {"success": False, "data": [], "message": "❌ Sin conexión para cargar localidades."}
+            return {"success": False, "data": [], "message": " Sin conexión para cargar localidades."}
         except requests.exceptions.Timeout:
-            return {"success": False, "data": [], "message": "⏱️ Timeout al obtener localidades."}
+            return {"success": False, "data": [], "message": " Timeout al obtener localidades."}
         except requests.exceptions.HTTPError as e:
-            return {"success": False, "data": [], "message": f"❌ Error HTTP: {e}"}
+            return {"success": False, "data": [], "message": f" Error HTTP: {e}"}
         except Exception as e:
-            return {"success": False, "data": [], "message": f"❌ Error inesperado: {e}"}
+            return {"success": False, "data": [], "message": f" Error inesperado: {e}"}
