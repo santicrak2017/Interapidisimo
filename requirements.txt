@@ -1,0 +1,11 @@
+# Dependencias del proyecto Inter Rapidísimo
+# Instalar con: pip install -r requirements.txt
+
+requests==2.31.0          # Consumo de APIs REST
+customtkinter==5.2.2      # Interfaz gráfica moderna
+
+# Incluidas en Python estándar (no requieren instalación):
+# - sqlite3    → base de datos local
+# - threading  → ejecución de tareas en segundo plano
+# - pathlib    → manejo de rutas de archivos
+# - tkinter    → base de customtkinter
